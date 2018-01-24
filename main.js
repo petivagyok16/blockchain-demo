@@ -9,6 +9,10 @@ const SHA256 = require('crypto-js/sha256');
  * There's also a security issue: anybody can change the content of the blocks
  * and simply recalculate the hash of each block and we end up with a totally
  * manipulated blockchain.
+ * 
+ * With PoW mechanism you have to prove that you put a lot of computing power
+ * into making a Block.
+ * This process is also called --- mining ---.
  */
 
 /**
