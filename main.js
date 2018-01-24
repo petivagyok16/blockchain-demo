@@ -29,16 +29,31 @@ class Block {
     this.data = data;
     this.previousHash = previousHash;
     this.hash = this.calculateHash();
+    this.nonce = 0;
   }
 
   calculateHash() {
-    return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
+    return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
+  }
+
+  mineBlock(difficulty) {
+    // While loop runs until the hash has the requested amount of Leading Zeros specified by difficulty
+    while (this.hash.substring(0, difficulty) !== Array(difficulty + 1 ).join('0')) {
+      // Nonce needs to trigger the hash to change every time loop runs once otherwise loop would be infinite.
+      this.nonce++;
+      this.hash = this.calculateHash();
+    }
+
+    console.log(`
+    CONGRATS! You successfully mined the block! Your reward is 50 AnnaCoin!
+    Mined block: `, this.hash);
   }
 }
 
 class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
+    this.difficulty = 2;
   }
 
   createGenesisBlock() {
@@ -51,7 +66,7 @@ class Blockchain {
 
   addBlock(newBlock) {
     newBlock.previousHash = this.getLatestBlock().hash;
-    newBlock.hash = newBlock.calculateHash();
+    newBlock.mineBlock(this.difficulty);
     this.chain.push(newBlock);
   }
 
@@ -74,15 +89,19 @@ class Blockchain {
 }
 
 let annaCoin = new Blockchain();
+
+console.log(`Mining block 1...`);
 annaCoin.addBlock(new Block(1, "23/01/2018", { amount: 4 }));
+console.log(`- - - -`);
+
+console.log(`Mining block 2...`);
 annaCoin.addBlock(new Block(2, "24/01/2018", { amount: 6 }));
+console.log(`- - - -`);
 
-console.log(`is blockchain valid? `, annaCoin.isChainValid());
+console.log(`Mining block 3...`);
+annaCoin.addBlock(new Block(3, "25/01/2018", { amount: 12 }));
+console.log(`- - - -`);
 
-// *** trying to tamper with the block *** //
-annaCoin.chain[1].data = { amount: 100 };
-annaCoin.chain[1].hash = annaCoin.chain[1].calculateHash(); // trying to recalculate its hash
-
-console.log(`is blockchain valid? `, annaCoin.isChainValid());
-
-console.log(JSON.stringify(annaCoin, null, 4));
+console.log(`Mining block 4...`);
+annaCoin.addBlock(new Block(4, "26/01/2018", { amount: 16 }));
+console.log(`- - - -`);
