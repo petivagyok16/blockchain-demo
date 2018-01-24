@@ -60,6 +60,13 @@ class Blockchain {
 let annaCoin = new Blockchain();
 annaCoin.addBlock(new Block(1, "23/01/2018", { amount: 4 }));
 annaCoin.addBlock(new Block(2, "24/01/2018", { amount: 6 }));
-// annaCoin.addBlock(new Block(1, "25/01/2018", { amount: 15 }));
+
+console.log(`is blockchain valid? `, annaCoin.isChainValid());
+
+// *** trying to tamper with the block *** //
+annaCoin.chain[1].data = { amount: 100 };
+annaCoin.chain[1].hash = annaCoin.chain[1].calculateHash(); // trying to recalculate its hash
+
+console.log(`is blockchain valid? `, annaCoin.isChainValid());
 
 console.log(JSON.stringify(annaCoin, null, 4));
