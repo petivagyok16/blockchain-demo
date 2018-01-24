@@ -1,6 +1,18 @@
 const SHA256 = require('crypto-js/sha256');
 
 /**
+ *  --- Proof of work ---
+ * PoW mechanism is needed to prevent tamper with the blockchain.
+ * Without proof of work people would be able to create hundreds of thousands
+ * of blocks per second and spam our blockchain.
+ * 
+ * There's also a security issue: anybody can change the content of the blocks
+ * and simply recalculate the hash of each block and we end up with a totally
+ * manipulated blockchain.
+ */
+
+/**
+ * 
  * index: tells us where the block sits on the chain (optional)
  * timestamp: when the block was created
  * data: includes any data e.g. details of the transaction, how much money, who was the sender etc.
